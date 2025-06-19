@@ -1,0 +1,294 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+html,
+body {
+  height: 100vh;
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  /* These will be set by @apply bg-background text-foreground in @layer base */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Define the 'dark' custom variant for Tailwind CSS v4 */
+@custom-variant dark (&:is(.dark *));
+
+/* @theme inline block for variable aliases */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans); /* Assuming you have these fonts defined elsewhere */
+  --font-mono: var(--font-geist-mono); /* Assuming you have these fonts defined elsewhere */
+
+  /* Sidebar Colors */
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+
+  /* Chart Colors (aligned with the vibrant dashboard hues, adjusted from previous attempts) */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Core UI Colors */
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* Border Radii */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* --- Light Mode Variables (Default) --- */
+:root {
+  --radius: 0.625rem;
+
+  /* Backgrounds */
+  --background: oklch(0.985 0 0); /* Very light grey */
+  --card: oklch(1 0 0);           /* Pure white for cards */
+  --popover: oklch(1 0 0);
+  --muted: oklch(0.95 0 0);       /* Slightly darker light grey for muted backgrounds */
+  --sidebar: oklch(1 0 0);        /* Pure white for sidebar */
+
+
+  /* Foreground/Text Colors */
+  --foreground: oklch(0.15 0 0);  /* Dark grey for main text */
+  --card-foreground: oklch(0.15 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+  --muted-foreground: oklch(0.5 0 0); /* Mid-grey for muted text */
+  --sidebar-foreground: oklch(0.2 0 0); /* Darker grey for sidebar text */
+
+
+  /* Primary/Accent Colors (A professional blue/purple for light mode) */
+  --primary: oklch(0.5 0.1 270); /* A solid, calm blue/purple */
+  --primary-foreground: oklch(0.985 0 0); /* Near white text on primary */
+  --accent: oklch(0.95 0 0);     /* Light grey for accent backgrounds */
+  --accent-foreground: oklch(0.15 0 0); /* Dark text on accent */
+  --sidebar-primary: oklch(0.95 0 0); /* Sidebar active item background */
+  --sidebar-primary-foreground: oklch(0.15 0 0); /* Sidebar active item text */
+  --sidebar-accent: oklch(0.97 0 0); /* Sidebar hovered/secondary item background */
+  --sidebar-accent-foreground: oklch(0.15 0 0);
+
+
+  /* Secondary Colors */
+  --secondary: oklch(0.92 0 0); /* Medium light grey for secondary actions */
+  --secondary-foreground: oklch(0.2 0 0); /* Dark text on secondary */
+
+
+  /* Destructive */
+  --destructive: oklch(0.65 0.25 25); /* Standard red */
+  --destructive-foreground: oklch(0.985 0 0);
+
+
+  /* Borders, Inputs, Rings */
+  --border: oklch(0.88 0 0); /* Light grey border */
+  --input: oklch(0.92 0 0);  /* Light grey input background */
+  --ring: oklch(0.65 0.1 270); /* Primary-toned ring */
+  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-ring: oklch(0.65 0.1 270);
+
+  /* Chart Colors (Light Mode friendly, generally desaturated for better contrast) */
+  --chart-1: oklch(0.6 0.15 270); /* Blue-purple */
+  --chart-2: oklch(0.55 0.08 180); /* Cyan */
+  --chart-3: oklch(0.5 0.1 40);   /* Orange */
+  --chart-4: oklch(0.65 0.15 120); /* Green */
+  --chart-5: oklch(0.5 0.1 0);    /* Red */
+}
+
+/* --- Dark Mode Variables (Applied when the 'dark' class is present on a parent element) --- */
+.dark {
+  /* Backgrounds: Very dark with a subtle brand-blue tint */
+  --background: oklch(13.769% 0.02077 253.987); /* Low lightness, slight chroma, brand hue */
+  --card: oklch(17.293% 0.02496 262.108);     /* Slightly lighter, same tint */
+  --popover: oklch(0.12 0.015 260);
+  --muted: oklch(0.18 0.015 260);     /* Darker muted backgrounds, same tint */
+  --sidebar: oklch(0.05 0.015 260); /* Even darker for sidebar contrast, same tint */
+
+
+  /* Foreground/Text Colors: From Dashboard Image */
+  --foreground: oklch(0.98 0 0); /* Near white for main text */
+  --card-foreground: oklch(0.98 0 0);
+  --popover-foreground: oklch(0.98 0 0);
+  --muted-foreground: oklch(0.65 0 0); /* Mid-grey for muted text */
+  --sidebar-foreground: oklch(0.85 0 0); /* Lighter grey for sidebar text */
+
+
+  /* Primary/Accent Colors:
+     --primary is set to the exact blue from image_4a291b.png (notification icon).
+     Other accents derived from dashboard image. */
+  --primary: oklch(0.44 0.22 260); /* Exact blue from notification icon */
+  --primary-foreground: oklch(0.98 0 0); /* White text on primary */
+  --accent: oklch(0.44 0.22 260); /* Using primary for general accent */
+  --accent-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.44 0.22 260);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.15 0.015 260); /* Subtle dark highlight for sidebar active states, with tint */
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+
+
+  /* Secondary Colors */
+  --secondary: oklch(0.15 0.015 260); /* Darker grey for secondary actions, with tint */
+  --secondary-foreground: oklch(0.85 0 0);
+
+
+  /* Destructive */
+  --destructive: oklch(0.7 0.25 25); /* Standard red */
+  --destructive-foreground: oklch(0.98 0 0);
+
+
+  /* Borders, Inputs, Rings: From Dashboard Image */
+  --border: oklch(0.2 0 0); /* Subtle dark grey border */
+  --input: oklch(0.1 0.015 260); /* Slightly darker than card for input fields, with tint */
+  --ring: oklch(0.6 0.15 260); /* Primary-toned ring */
+  --sidebar-border: oklch(0.2 0 0);
+  --sidebar-ring: oklch(0.6 0.15 260);
+
+  /* Chart Colors: Adjusted for vibrancy and distinction on dark background */
+  --chart-1: oklch(0.6 0.22 275); /* Deep vibrant blue-purple */
+  --chart-2: oklch(0.55 0.1 180); /* Cyan */
+  --chart-3: oklch(0.5 0.15 40);  /* Orange-yellow */
+  --chart-4: oklch(0.65 0.2 120); /* Vibrant green (like "Paid" status) */
+  --chart-5: oklch(0.4 0.1 0);   /* Red */
+}
+
+@layer base {
+  * {
+    /* Apply border and outline styles universally, leveraging custom properties */
+    @apply border-[var(--border)] outline-[var(--ring)]/50;
+  }
+
+  html {
+    /* Set color-scheme dynamically based on the theme */
+    color-scheme: light; /* Default to light */
+  }
+
+  html.dark {
+    color-scheme: dark; /* Switch to dark when .dark class is present */
+  }
+
+  body {
+    /* Apply background and text colors based on the current theme */
+    @apply bg-background text-foreground;
+    color: var(--foreground); /* Fallback/direct CSS application */
+  }
+
+  /* Ensure all inherited text colors within a dark-moded element remain consistent */
+  .dark * {
+    color: inherit;
+  }
+}
+
+/* Background grid pattern */
+.bg-\[linear-gradient\(to_right,\#161616_1px,transparent_1px\),linear-gradient\(to_bottom,\#161616_1px,transparent_1px\)\] {
+    background-image: linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    /* Adjust opacity or color based on theme. Tailwind utility will use the var. */
+}
+
+/* Adjust dot pattern for both light and dark backgrounds */
+.dotPattern {
+  background-image: radial-gradient(oklch(0.85 0 0) 1px, transparent 1px); /* Light grey dots for light background */
+  background-size: 25px 25px;
+}
+
+.dark .dotPattern {
+  background-image: radial-gradient(oklch(0.2 0.015 260) 1px, transparent 1px); /* Darker blue-grey dots for dark background, with tint */
+}
+
+/* Existing animation utilities */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 hsl(var(--primary-foreground) / 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px hsl(var(--primary-foreground) / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 hsl(var(--primary-foreground) / 0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; /* Bouncy effect */
+}
+
+.animate-pulse-border {
+  animation: pulse-border 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Webkit scrollbar styling for customization - adjusted for both themes */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background); /* Use theme background for track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary); /* Use primary color for thumb */
+  border-radius: 10px;
+  border: 3px solid var(--card); /* Border around thumb for better visibility */
+}
